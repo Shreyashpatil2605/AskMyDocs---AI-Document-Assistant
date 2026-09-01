@@ -104,23 +104,3 @@ pip install -r requirements.txt
 streamlit run app.py
 ```
 
----
-
-## 🎓 Technical Interview Guide
-
-Here is how you can explain this project in a placement interview:
-
-### 1. What is RAG?
-"RAG stands for Retrieval-Augmented Generation. Instead of relying solely on what an LLM learned during training (which has a knowledge cutoff and can hallucinate), RAG retrieves relevant facts from a local source of truth (like uploaded PDFs) and feeds them directly to the LLM alongside the user's question. This makes answers factual, grounded, and specific."
-
-### 2. Why do we chunk documents?
-"We chunk documents because LLMs have context window constraints and processing large documents is expensive and slow. Chunking allows us to break down pages into smaller, overlaps-inclusive snippets (we used 1000 characters with 200 overlap). This ensures that only the relevant sections are retrieved, saving cost and improving answer precision."
-
-### 3. What are Embeddings?
-"Embeddings are high-dimensional vector representations of text. An embedding model converts words or sentences into list of floats, capturing their semantic meaning. Concepts with similar meanings are close together in the vector space. We used Google's `models/gemini-embedding-001`."
-
-### 4. What is FAISS and why is it used?
-"FAISS stands for Facebook AI Similarity Search. It is a highly optimized library for finding similar vectors. Instead of doing a linear search (O(N)) comparing the query embedding with all document chunks, FAISS indexes vectors for ultra-fast distance calculations (like Cosine Similarity or L2 distance)."
-
-### 5. How does Gemini generate grounded answers?
-"We retrieve the top 4 chunks, merge them into a single string, and inject them into a Prompt Template. The prompt tells Gemini to answer *only* from the text and output a specific fallback string if the answer is missing. We set `temperature=0.0` to force deterministic behavior and prevent creativity/hallucinations."
